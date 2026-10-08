@@ -10,6 +10,8 @@ Item {
     property real thickness: 4
     property bool animate: true
     property real phase: 0
+    property color color: Theme.primary
+    property color trackColor: Theme.secondaryContainer
     implicitHeight: amplitude * 2 + thickness + 4
     implicitWidth: 240
     NumberAnimation on phase { running: bar.animate && !Theme.reduceMotion && bar.visible; from: 0; to: 2 * Math.PI; duration: 1600; loops: Animation.Infinite }
@@ -18,7 +20,7 @@ Item {
         anchors.fill: parent
         preferredRendererType: Shape.CurveRenderer
         ShapePath {
-            strokeColor: Theme.primary; strokeWidth: bar.thickness; fillColor: "transparent"; capStyle: ShapePath.RoundCap
+            strokeColor: bar.color; strokeWidth: bar.thickness; fillColor: "transparent"; capStyle: ShapePath.RoundCap
             PathPolyline {
                 path: {
                     const pts = [], mid = bar.height / 2, end = Math.max(0, bar.split - bar.thickness);
@@ -29,7 +31,7 @@ Item {
             }
         }
     }
-    Rectangle { x: bar.split + bar.thickness * 1.5; width: Math.max(0, bar.width - x); height: bar.thickness; radius: height / 2; anchors.verticalCenter: parent.verticalCenter; color: Theme.secondaryContainer }
-    Rectangle { visible: bar.value < .97; width: bar.thickness; height: width; radius: width / 2; x: bar.width - width; anchors.verticalCenter: parent.verticalCenter; color: Theme.primary }
+    Rectangle { x: bar.split + bar.thickness * 1.5; width: Math.max(0, bar.width - x); height: bar.thickness; radius: height / 2; anchors.verticalCenter: parent.verticalCenter; color: bar.trackColor }
+    Rectangle { visible: bar.value < .97; width: bar.thickness; height: width; radius: width / 2; x: bar.width - width; anchors.verticalCenter: parent.verticalCenter; color: bar.color }
     Accessible.role: Accessible.ProgressBar
 }
