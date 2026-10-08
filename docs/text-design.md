@@ -15,4 +15,5 @@ Renders: `artifacts/text/`, QML: `prototypes/text/`.
 
 ## Documents merged in (2026-10-08)
 - The planned Documents app is folded into the editor as a third mode: **Write / Code / Read**. Read opens PDF, EPUB and CBZ; see round 3 renders.
-- Connected button groups everywhere are now **one full pill** with a sliding selected pill (user: "the pill should probably be a full pill"); `material/qml/SegmentedButtons.qml`.
+- Connected button groups everywhere (`material/qml/SegmentedButtons.qml`): one pill split into segments with a 2 px gap; outer ends fully round, inner corners 6 px; **shapes never deform** — selection only changes colour; nothing draws outside the group's bounds. (A sliding full-pill version was tried and rejected.)
+- Read mode LOCKED with this: PDF thumbnails, highlights + note pins, reading toolbar, notes panel with Markdown export, EPUB reflow on phone.
