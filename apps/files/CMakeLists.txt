@@ -25,6 +25,7 @@ qt_add_qml_module(opal-files-core
         src/filesenv.h
     QML_FILES
         qml/DebugMain.qml
+        qml/DebugView.qml
     DEPENDENCIES QtQuick
 )
 set_target_properties(opal-files-core PROPERTIES POSITION_INDEPENDENT_CODE ON)
