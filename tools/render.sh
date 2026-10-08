@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
+# Renders QML with the GPU scene graph and no visible window: render.sh <file.qml> <out.png> <WxH> <posture> [VAR=value...]
 # OPAL_RENDER_BIN picks another render binary, e.g. build/apps/files/opal-files-render.
-# Renders prototypes with the GPU scene graph and no visible window: render.sh <file.qml> <out.png> <WxH> <posture> [VAR=value...]
 set -euo pipefail
 root=$(cd "$(dirname "$0")/.." && pwd)
 file=$1 out=$2 size=$3 posture=$4; shift 4

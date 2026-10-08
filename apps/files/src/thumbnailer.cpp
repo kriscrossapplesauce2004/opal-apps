@@ -76,13 +76,16 @@ bool savePng(QImage img, const QString &finalPath, const QString &uri, qint64 mt
     img.setText(QStringLiteral("Software"), QStringLiteral("Opal Files"));
     // QTemporaryFile is created with mode 0600 and renamed into place, so readers never see a partial file.
     QTemporaryFile tmp(QFileInfo(finalPath).absolutePath() + QStringLiteral("/.opal-XXXXXX.png"));
-    if (!tmp.open())
-        return false;
-    if (!img.save(&tmp, "PNG"))
+    if (!tmp.open() || !img.save(&tmp, "PNG"))
         return false;
     tmp.close();
+    // Without this the temporary file object would delete the renamed file when it dies.
+    tmp.setAutoRemove(false);
     QFile::remove(finalPath);
-    return tmp.rename(finalPath);
+    if (tmp.rename(finalPath))
+        return true;
+    QFile::remove(tmp.fileName());
+    return false;
 }
 
 QImage renderImage(const QString &path, int bucket)
