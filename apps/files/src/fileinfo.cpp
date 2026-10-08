@@ -49,7 +49,7 @@ void FileInfo::clear()
 {
     m_ready = false;
     m_error.clear();
-    m_name = m_displayName = m_path = m_contentType = m_symlinkTarget = m_owner = m_group.clear();
+    m_name = m_displayName = m_path = m_contentType = m_symlinkTarget = m_owner = m_group = QString();
     m_modified = m_accessed = m_created = QDateTime();
     m_size = 0;
     m_mode = 0;
