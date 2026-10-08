@@ -4,7 +4,6 @@
 
 #include <QDateTime>
 #include <QStandardPaths>
-#include <QtConcurrent/QtConcurrentRun>
 #include <algorithm>
 
 namespace {
