@@ -14,8 +14,7 @@ A set of delightful, independent Linux apps that share Opal's Material 3 Express
 | Photos | `dev.opal.Photos` | Gallery and image viewer: timeline, albums (folders), viewer with zoom/pan, basic edits later. |
 | Media | `dev.opal.Media` | Music + video + internet radio/streams + Jellyfin/Subsonic libraries + audiobooks. One queue, one now-playing surface, MPRIS. Video on libmpv. |
 | Terminal | `dev.opal.Terminal` | **Second priority, and very riceable.** Plain-text config (`~/.config/opal/terminal.conf`) with live reload; colours follow Opal or any imported kitty/alacritty/foot/ghostty theme; font, ligatures, padding, opacity and blur, cursor shapes and trails, background images, custom post-process shaders, remappable keybinds and phone key row. Own VT core (libvterm) with a glyph-atlas scene-graph renderer. Phone extra-key row and gestures, desktop splits that become a pager on phone, tabs, sessions that survive closing the window. **No couch posture.** |
-| Text Editor | `dev.opal.TextEditor` | Plain text and Markdown: tabs, find/replace, syntax highlighting. Phone opens into the document. **No couch posture.** |
-| Documents | `dev.opal.Documents` | PDF (poppler), EPUB and comics (CBZ). Paged on desktop, reflow on phone, controller page turns. |
+| Text Editor | `dev.opal.TextEditor` | **Write / Code / Read modes.** Write: plain text and Markdown. Code: IDE (LSP, git, tasks, terminal panel, MCP server for agents). Read: absorbed the planned Documents app (2026-10-08) — PDF (poppler), EPUB, comics (CBZ); paged on desktop, reflow on phone, controller page turns. Phone opens into the document. No couch posture except Read-mode page turns. |
 | Assistant | `dev.opal.Assistant` | Optional app for those who want it: all Opal assistant functionality (Claude chat, AT-SPI computer use, approvals, step view) moves out of the shell into this app. The shell keeps only a thin Super+A / Copilot-key hook that opens it, and hides the hook when the app is not installed. |
 | Calendar | `dev.opal.Calendar` | Calendar + Contacts over CalDAV/CardDAV with a local store. Agenda on phone, week grid on desktop. |
 
@@ -67,4 +66,4 @@ Width classes are separate from posture: compact (< 600), medium (< 840), expand
 
 1. `Opal.Material` module + render harness.
 2. Design round per app, Files first, Terminal second (wave 1: Files, Photos, Media, Terminal). The user picks and mixes.
-3. Build in waves of at most three parallel workstreams: wave 1 Files+Photos / Media / Terminal, wave 2 Text Editor / Documents / Calendar.
+3. Build in waves of at most three parallel workstreams: wave 1 Files+Photos / Media / Terminal, wave 2 Text Editor (incl. Read mode) / Calendar / Assistant.
