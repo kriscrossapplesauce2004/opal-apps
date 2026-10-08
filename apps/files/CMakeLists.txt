@@ -18,6 +18,9 @@ qt_add_qml_module(opal-files-core
         src/entrymodel.h src/entrymodel.cpp
         src/foldermodel.h src/foldermodel.cpp
         src/places.h src/places.cpp
+        src/operation.h src/operation.cpp
+        src/fileoperations.h src/fileoperations.cpp
+        src/search.h src/search.cpp
         src/fileinfo.h src/fileinfo.cpp
         src/filesenv.h
     QML_FILES
