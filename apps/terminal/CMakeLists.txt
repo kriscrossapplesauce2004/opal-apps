@@ -26,6 +26,7 @@ qt_add_qml_module(OpalTerminalEngine
     DEPENDENCIES QtQuick
 )
 qt_add_shaders(OpalTerminalEngine "terminal_shaders"
+    BATCHABLE
     BASE ${CMAKE_CURRENT_SOURCE_DIR}/src/vt
     PREFIX /opal/terminal
     FILES src/vt/shaders/cells.vert src/vt/shaders/cells.frag
