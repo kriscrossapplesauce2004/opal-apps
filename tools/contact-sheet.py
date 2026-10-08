@@ -38,7 +38,10 @@ y = pad + 100
 for r in rows:
     x = pad
     for label, im in r:
-        d.text((x + 4, y), label, font=font(30, True), fill=(205, 200, 160))
+        size = 30
+        while size > 14 and d.textlength(label, font=font(size, True)) > im.width - 8:
+            size -= 2
+        d.text((x + 4, y + (30 - size)), label, font=font(size, True), fill=(205, 200, 160))
         sheet.paste(im, (x, y + 52))
         x += im.width + gap
     y += row_h + 70 + gap
