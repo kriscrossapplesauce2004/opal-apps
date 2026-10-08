@@ -29,10 +29,7 @@ int main(int argc, char **argv)
     engine.addImportPath(QStringLiteral(OPAL_QML_DIR));
 #endif
     Thumbnailer::attach(&engine);
-    // The full interface comes later; until then every start loads the debug one.
-    if (!parser.isSet(debug))
-        qWarning("The full interface is not built yet; loading the debug interface.");
-    engine.load(QUrl(QStringLiteral("qrc:/qt/qml/Opal/Files/qml/DebugMain.qml")));
+    engine.load(QUrl(parser.isSet(debug) ? QStringLiteral("qrc:/qt/qml/Opal/Files/qml/DebugMain.qml") : QStringLiteral("qrc:/qt/qml/Opal/Files/qml/Main.qml")));
     if (engine.rootObjects().isEmpty())
         return 1;
     return app.exec();

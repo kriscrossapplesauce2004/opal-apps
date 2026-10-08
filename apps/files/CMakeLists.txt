@@ -23,10 +23,32 @@ qt_add_qml_module(opal-files-core
         src/search.h src/search.cpp
         src/fileinfo.h src/fileinfo.cpp
         src/filesenv.h
+        src/systembridge.h src/systembridge.cpp
     QML_FILES
         qml/DebugMain.qml
         qml/DebugView.qml
-    DEPENDENCIES QtQuick
+        qml/Main.qml
+        qml/FilesView.qml
+        qml/BrowserPane.qml
+        qml/DetailsList.qml
+        qml/IconGrid.qml
+        qml/ColumnsView.qml
+        qml/PhoneList.qml
+        qml/PhoneFiles.qml
+        qml/CouchFiles.qml
+        qml/PlacesPanel.qml
+        qml/Breadcrumbs.qml
+        qml/FileMark.qml
+        qml/RenameField.qml
+        qml/TabsBar.qml
+        qml/FilterChips.qml
+        qml/StatusStrip.qml
+        qml/SelectionBar.qml
+        qml/FileMenu.qml
+        qml/OpPill.qml
+        qml/Dialogs.qml
+        qml/Kinds.js
+    DEPENDENCIES QtQuick QtQuick.Controls QtQuick.Layouts Opal.Material
 )
 set_target_properties(opal-files-core PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(opal-files-core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
