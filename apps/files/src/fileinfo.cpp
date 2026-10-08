@@ -97,7 +97,8 @@ void FileInfo::reload()
         self->m_isDir = g_file_info_get_file_type(i) == G_FILE_TYPE_DIRECTORY;
         self->m_contentType = self->m_isDir ? QStringLiteral("inode/directory") : Gio::str(ct);
         self->m_isSymlink = g_file_info_get_is_symlink(i);
-        self->m_symlinkTarget = Gio::str(g_file_info_get_symlink_target(i));
+        // Only symlinks carry the target attribute; reading it on other files is a GIO critical.
+        self->m_symlinkTarget = g_file_info_has_attribute(i, G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET) ? Gio::str(g_file_info_get_symlink_target(i)) : QString();
         self->m_size = qint64(g_file_info_get_size(i));
         self->m_modified = fromSecs(i, "time::modified");
         self->m_accessed = fromSecs(i, "time::access");
