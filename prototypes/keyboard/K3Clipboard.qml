@@ -1,2 +1,2 @@
 import QtQuick
-Scene { kbd.mode: "clipboard" }
+Scene { kbd.panel: "clipboard" }

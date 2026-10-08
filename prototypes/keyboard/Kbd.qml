@@ -16,6 +16,10 @@ Rectangle {
     property bool split: false
     property real keyH: 54
     property bool ctrlLatched: false
+    // A panel replaces the keys: menu, edit or emoji. The tools button morphs into the menu.
+    property string panel: ""
+    readonly property string panelTitle: ({menu: "Tools", edit: "Text editing", emoji: "Emoji", clipboard: "Clipboard", trackpad: "Trackpad"})[panel] || ""
+    property bool menuOpen: panel === "menu"
     color: Theme.surfaceLow
     implicitHeight: col.implicitHeight + 16
     readonly property var letters: [["q","w","e","r","t","y","u","i","o","p"], ["a","s","d","f","g","h","j","k","l"], ["⇧","z","x","c","v","b","n","m","⌫"]]
@@ -60,11 +64,11 @@ Rectangle {
         Item {
             Layout.fillWidth: true; implicitHeight: 48
             RowLayout {
-                anchors.fill: parent; visible: kb.bar === "suggest" && kb.mode === "letters"; spacing: 6
+                anchors.fill: parent; visible: kb.panel === "" && kb.bar === "suggest" && (kb.mode === "letters" || kb.mode === "terminal"); spacing: 6
                 Rectangle { implicitWidth: 40; implicitHeight: 40; radius: 20; color: Theme.surfaceHigh
                     Glyph { anchors.centerIn: parent; name: "apps"; font.pixelSize: 20; color: Theme.subtext } }
                 Repeater {
-                    model: [{t: "hello"}, {t: "help", main: true}, {t: "helm"}]
+                    model: kb.mode === "terminal" ? [{t: "Paste"}, {t: "Ctrl C", main: true}, {t: "Tab ↹"}] : [{t: "hello"}, {t: "help", main: true}, {t: "helm"}]
                     Rectangle { required property var modelData
                         Layout.fillWidth: true; implicitHeight: 40; radius: 20
                         color: modelData.main ? Theme.secondaryContainer : "transparent"
@@ -72,8 +76,15 @@ Rectangle {
                 Rectangle { implicitWidth: 40; implicitHeight: 40; radius: 20; color: Theme.surfaceHigh
                     Glyph { anchors.centerIn: parent; name: "mic"; font.pixelSize: 20; color: Theme.subtext } }
             }
+            RowLayout {
+                anchors.fill: parent; visible: kb.panel !== ""; spacing: 8
+                Rectangle { implicitWidth: 40; implicitHeight: 40; radius: 20; color: Theme.primary
+                    Glyph { anchors.centerIn: parent; name: "keyboard"; font.pixelSize: 20; color: Theme.onPrimary } }
+                MText { Layout.fillWidth: true; text: kb.panelTitle; role: "title" }
+                Glyph { name: "settings"; font.pixelSize: 20; color: Theme.subtext; Layout.rightMargin: 10 }
+            }
             Flickable {
-                anchors.fill: parent; visible: kb.bar === "tools" || kb.mode !== "letters"; contentWidth: tools.width; clip: true
+                anchors.fill: parent; visible: kb.panel === "" && kb.bar === "tools"; contentWidth: tools.width; clip: true
                 Row {
                     id: tools; spacing: 6; anchors.verticalCenter: parent.verticalCenter
                     Rectangle { width: 40; height: 40; radius: 20; color: Theme.primary
@@ -87,7 +98,7 @@ Rectangle {
         }
         // Main area by mode.
         ColumnLayout {
-            Layout.fillWidth: true; spacing: 2; visible: kb.mode === "letters" || kb.mode === "terminal"
+            Layout.fillWidth: true; spacing: 2; visible: kb.panel === "" && (kb.mode === "letters" || kb.mode === "terminal")
             RowLayout { Layout.fillWidth: true; spacing: 0; visible: kb.mode === "letters"
                 Repeater { model: kb.digits; Key { required property string modelData; label: modelData; kind: "digit"; implicitHeight: 40 } } }
             RowLayout { Layout.fillWidth: true; spacing: 0; visible: kb.mode === "terminal"
@@ -125,9 +136,60 @@ Rectangle {
                 Key { icon: kb.enterIcon; label: kb.enterLabel; kind: "enter"; weight: 1.6 }
             }
         }
+        // Tools menu: the apps button grows into this sheet.
+        Rectangle {
+            Layout.fillWidth: true; visible: kb.panel === "menu"; implicitHeight: kb.keyH * 5 + 10; radius: 28; color: Theme.surfaceHigh
+            ColumnLayout { anchors.fill: parent; anchors.margins: 10; spacing: 8
+                GridLayout { Layout.fillWidth: true; Layout.fillHeight: true; columns: 4; rowSpacing: 6; columnSpacing: 6
+                    Repeater {
+                        model: [{t: "Clipboard", i: "content_paste", b: "6"}, {t: "Emoji", i: "mood"}, {t: "Text editing", i: "text_select_move_forward_character"}, {t: "Trackpad", i: "touchpad_mouse"},
+                                {t: "Terminal keys", i: "terminal"}, {t: "One-handed", i: "back_hand"}, {t: "Floating", i: "picture_in_picture"}, {t: "Resize", i: "height"},
+                                {t: "Languages", i: "language"}, {t: "Symbols", i: "special_character"}, {t: "Theme", i: "palette"}, {t: "Settings", i: "settings"}]
+                        Rectangle { required property var modelData
+                            Layout.fillWidth: true; Layout.fillHeight: true; radius: 20; color: Theme.surfaceHighest
+                            Column { anchors.centerIn: parent; spacing: 6
+                                Rectangle { anchors.horizontalCenter: parent.horizontalCenter; width: 44; height: 44; radius: 16; color: Theme.alpha(Theme.primary, .16)
+                                    Glyph { anchors.centerIn: parent; name: modelData.i; font.pixelSize: 24; color: Theme.primary }
+                                    Rectangle { visible: !!modelData.b; anchors.right: parent.right; anchors.top: parent.top; anchors.margins: -4; width: 18; height: 18; radius: 9; color: Theme.tertiary
+                                        MText { anchors.centerIn: parent; text: modelData.b || ""; font.pixelSize: 10; font.weight: Font.Bold; color: Theme.base } } }
+                                MText { anchors.horizontalCenter: parent.horizontalCenter; text: modelData.t; font.pixelSize: 11; font.weight: Font.Medium } } } } } }
+        }
+        // Text editing: arrow pad around a select toggle, line and word jumps, and edit actions.
+        RowLayout {
+            Layout.fillWidth: true; visible: kb.panel === "edit"; Layout.preferredHeight: kb.keyH * 4 + 10; spacing: 8
+            Rectangle { Layout.fillWidth: true; Layout.preferredWidth: 3; Layout.fillHeight: true; radius: 28; color: Theme.surfaceHigh
+                Item { anchors.centerIn: parent; width: 210; height: 210
+                    Repeater { model: [{i: "keyboard_arrow_up", x: 70, y: 0}, {i: "keyboard_arrow_left", x: 0, y: 70}, {i: "keyboard_arrow_right", x: 140, y: 70}, {i: "keyboard_arrow_down", x: 70, y: 140}]
+                        Rectangle { required property var modelData; x: modelData.x; y: modelData.y; width: 70; height: 70; radius: 24; color: Theme.surfaceHighest
+                            Glyph { anchors.centerIn: parent; name: modelData.i; font.pixelSize: 34; color: Theme.text } } }
+                    Rectangle { x: 75; y: 75; width: 60; height: 60; radius: 30; color: Theme.primary
+                        Column { anchors.centerIn: parent; Glyph { anchors.horizontalCenter: parent.horizontalCenter; name: "select"; font.pixelSize: 22; color: Theme.onPrimary }
+                            MText { text: "Select"; font.pixelSize: 10; font.weight: Font.Bold; color: Theme.onPrimary } } } } }
+            ColumnLayout { Layout.fillWidth: true; Layout.preferredWidth: 1.4; Layout.maximumWidth: 140; Layout.fillHeight: true; spacing: 6
+                Repeater { model: [{t: "Line start", i: "first_page"}, {t: "Line end", i: "last_page"}, {t: "Word ←", i: "keyboard_double_arrow_left"}, {t: "Word →", i: "keyboard_double_arrow_right"}, {t: "Select all", i: "select_all"}]
+                    Rectangle { required property var modelData; Layout.fillWidth: true; Layout.fillHeight: true; radius: 18; color: Theme.secondaryContainer
+                        RowLayout { anchors.centerIn: parent; spacing: 6; Glyph { name: modelData.i; font.pixelSize: 18; color: Theme.onSecondaryContainer } MText { text: modelData.t; font.pixelSize: 12; font.weight: Font.Medium; color: Theme.onSecondaryContainer } } } } }
+        }
+        RowLayout { Layout.fillWidth: true; visible: kb.panel === "edit"; spacing: 6
+            Repeater { model: [{i: "content_cut", t: "Cut"}, {i: "content_copy", t: "Copy"}, {i: "content_paste", t: "Paste"}, {i: "undo", t: "Undo"}, {i: "redo", t: "Redo"}]
+                Rectangle { required property var modelData; Layout.fillWidth: true; implicitHeight: 48; radius: 24; color: Theme.surfaceHighest
+                    Column { anchors.centerIn: parent; Glyph { anchors.horizontalCenter: parent.horizontalCenter; name: modelData.i; font.pixelSize: 19; color: Theme.text } MText { anchors.horizontalCenter: parent.horizontalCenter; text: modelData.t; font.pixelSize: 10; color: Theme.subtext } } } } }
+        // Emoji: search, category tabs, recent row and the grid; one skin-tone picker open.
+        ColumnLayout {
+            Layout.fillWidth: true; visible: kb.panel === "emoji"; spacing: 6
+            SearchField { Layout.fillWidth: true; implicitHeight: 44; placeholder: "Search emoji"; color: Theme.surfaceHighest }
+            RowLayout { Layout.fillWidth: true; spacing: 2
+                Repeater { model: ["schedule", "mood", "waving_hand", "pets", "restaurant", "flight", "emoji_objects", "emoji_symbols", "flag"]
+                    Rectangle { required property string modelData; required property int index; Layout.fillWidth: true; implicitHeight: 36; radius: 18; color: index === 1 ? Theme.secondaryContainer : "transparent"
+                        Glyph { anchors.centerIn: parent; name: modelData; fill: index === 1 ? 1 : 0; font.pixelSize: 20; color: index === 1 ? Theme.onSecondaryContainer : Theme.subtext } } } }
+            MText { text: "Recent"; role: "label"; color: Theme.primary; Layout.leftMargin: 6 }
+            Grid { Layout.fillWidth: true; columns: 8; spacing: 0
+                Repeater { model: ["💜","🔥","😭","👍","✨","🫠","😎","🙏","😀","😊","😂","🥰","🤔","🙃","😍","😘","😅","🤣","😴","😮","😬","🥹","😇","🤗","😏","😤","😢","🫡","👋","🤝","💪","🫶"]
+                    Text { required property string modelData; width: (kb.width - 12) / 8; height: 44; text: modelData; font.pixelSize: 28; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter } } }
+        }
         // Clipboard: recent clips from the Opal clipboard service as cards; pinned first.
         GridLayout {
-            Layout.fillWidth: true; visible: kb.mode === "clipboard"; columns: 2; rowSpacing: 6; columnSpacing: 6
+            Layout.fillWidth: true; visible: kb.panel === "clipboard"; columns: 2; rowSpacing: 6; columnSpacing: 6
             Repeater {
                 model: [{t: "cmake --build build && ctest --test-dir build", pin: true, code: true}, {t: "kriscrossapplesauce2004/achroot", link: true}, {img: "file:///home/melissa/Pictures/Wallpapers/dr5-keyart-YzI66DkClTeJ5jBQ.png"}, {t: "Meet at the station at 7, bring the dock"}, {t: "#cfbdff"}, {t: "sudo pacman -Syu", code: true}]
                 Rectangle {
@@ -142,7 +204,7 @@ Rectangle {
         }
         // Trackpad: hold space and the keys become a trackpad surface.
         Rectangle {
-            Layout.fillWidth: true; visible: kb.mode === "trackpad"; implicitHeight: kb.keyH * 4 + 44; radius: 26; color: Theme.surface
+            Layout.fillWidth: true; visible: kb.panel === "trackpad"; implicitHeight: kb.keyH * 4 + 44; radius: 26; color: Theme.surface
             Grid { anchors.fill: parent; anchors.margins: 18; columns: 10; rows: 4; columnSpacing: (width - 10 * 6) / 9; rowSpacing: (height - 4 * 6) / 3
                 Repeater { model: 40; Rectangle { width: 6; height: 6; radius: 3; color: Theme.alpha(Theme.subtext, .25) } } }
             Column { anchors.centerIn: parent; spacing: 6

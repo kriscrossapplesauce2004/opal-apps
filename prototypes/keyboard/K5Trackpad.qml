@@ -1,2 +1,2 @@
 import QtQuick
-Scene { kbd.mode: "trackpad" }
+Scene { kbd.panel: "trackpad" }
