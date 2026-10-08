@@ -1,5 +1,5 @@
 set(QT_NO_PRIVATE_MODULE_WARNING ON)
-find_package(Qt6 6.6 REQUIRED COMPONENTS Concurrent GuiPrivate)
+find_package(Qt6 6.6 REQUIRED COMPONENTS Concurrent DBus GuiPrivate)
 pkg_check_modules(GIO REQUIRED IMPORTED_TARGET gio-2.0 gio-unix-2.0)
 pkg_check_modules(POPPLER_QT6 IMPORTED_TARGET poppler-qt6)
 
@@ -17,6 +17,8 @@ qt_add_qml_module(opal-files-core
         src/thumbnailer.h src/thumbnailer.cpp
         src/entrymodel.h src/entrymodel.cpp
         src/foldermodel.h src/foldermodel.cpp
+        src/places.h src/places.cpp
+        src/fileinfo.h src/fileinfo.cpp
         src/filesenv.h
     QML_FILES
         qml/DebugMain.qml
@@ -24,7 +26,7 @@ qt_add_qml_module(opal-files-core
 )
 set_target_properties(opal-files-core PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(opal-files-core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
-target_link_libraries(opal-files-core PUBLIC Qt6::Core Qt6::Gui Qt6::Qml Qt6::Quick Qt6::Concurrent PkgConfig::GIO)
+target_link_libraries(opal-files-core PUBLIC Qt6::Core Qt6::Gui Qt6::Qml Qt6::Quick Qt6::Concurrent Qt6::DBus PkgConfig::GIO)
 if(POPPLER_QT6_FOUND)
     target_link_libraries(opal-files-core PUBLIC PkgConfig::POPPLER_QT6)
     target_compile_definitions(opal-files-core PUBLIC OPAL_HAVE_POPPLER)
