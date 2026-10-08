@@ -18,23 +18,24 @@ Rectangle {
     property bool trail: false
     radius: 20
     color: theme ? theme.bg : Theme.surfaceLowest
-    function tint(hex) { return Theme.mix(hex, Theme.primary, Theme.light ? .1 : .14); }
+    function tint(hex) { return Theme.mix(hex, Theme.primary, .06); }
     readonly property var ansi: theme ? theme : ({
-        fg: Theme.text, dim: Theme.subtext, red: tint(Theme.light ? "#b3261e" : "#f2a59d"), green: tint(Theme.light ? "#2e7d32" : "#a8d8a0"),
-        yellow: tint(Theme.light ? "#8a6d00" : "#ecd38a"), blue: tint(Theme.light ? "#1a5fb4" : "#a8c8ff"), magenta: tint(Theme.light ? "#8e3fa8" : "#e2b6f2"),
-        cyan: tint(Theme.light ? "#00727a" : "#95d8d4"), cursor: Theme.primary
+        fg: Theme.text, dim: Theme.subtext, red: tint(Theme.light ? "#c5221f" : "#f28b82"), green: tint(Theme.light ? "#188038" : "#81c995"),
+        yellow: tint(Theme.light ? "#b06000" : "#fdd663"), blue: tint(Theme.light ? "#1967d2" : "#8ab4f8"), magenta: tint(Theme.light ? "#9334e6" : "#c58af9"),
+        cyan: tint(Theme.light ? "#007b83" : "#78d9ec"), cursor: Theme.primary
     })
     function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/ /g, "&nbsp;"); }
-    function html(spans) { let h = ""; for (const sp of spans) h += "<font color=\"" + ansi[sp[1]] + "\">" + esc(sp[0]) + "</font>"; return h || "&nbsp;"; }
+    function html(spans) { let h = ""; for (const sp of spans) { const t = "<font color=\"" + ansi[sp[1]] + "\">" + esc(sp[0]) + "</font>"; h += sp[0].indexOf("❯") === 0 ? "<b>" + t + "</b>" : t; } return h || "&nbsp;"; }
     Column {
         id: col
         x: term.padding + (Object.keys(term.marks).length ? 10 : 0); y: term.padding
         Repeater {
+            id: rows
             model: term.lines
             Item {
                 required property var modelData
                 required property int index
-                width: lineText.implicitWidth; height: term.lineHeight
+                width: Math.max(1, lineText.implicitWidth); height: term.lineHeight
                 Text { id: lineText; anchors.verticalCenter: parent.verticalCenter; text: term.html(parent.modelData); textFormat: Text.StyledText; font.family: term.fontFamily; font.pixelSize: term.fontSize; color: term.ansi.fg }
                 Rectangle {
                     readonly property string mark: term.marks[parent.index] || ""
@@ -50,8 +51,9 @@ Rectangle {
         id: caret
         visible: term.cursor
         readonly property real cw: Math.round(term.fontSize * .6)
-        x: col.x + (col.children.length > 1 ? col.children[col.children.length - 2].width : 0) + 1
-        y: col.y + Math.max(0, term.lines.length - 1) * term.lineHeight
+        readonly property Item lastRow: rows.count > 0 ? rows.itemAt(rows.count - 1) : null
+        x: col.x + (lastRow && lastRow.width > 1 ? lastRow.width : 0) + 1
+        y: col.y + (lastRow ? lastRow.y : 0)
         Repeater {
             model: term.trail ? 4 : 0
             Rectangle { required property int index; x: -(index + 1) * caret.cw * 1.6; y: 3; width: caret.cw; height: term.lineHeight - 6; radius: 2; color: term.ansi.cursor; opacity: .32 - index * .07; scale: 1 - index * .12 }
