@@ -8,7 +8,8 @@ Text {
     text: Theme.glyphs[name] || name
     font.family: "Material Symbols Rounded"
     font.pixelSize: 22
-    font.variableAxes: ({"FILL": fill, "wght": weight, "opsz": Math.max(20, Math.min(48, font.pixelSize))})
+    // Reading font.pixelSize here would make a binding loop on the font group, so the optical size stays automatic.
+    font.variableAxes: ({"FILL": fill, "wght": weight})
     color: Theme.text
     horizontalAlignment: Text.AlignHCenter
     verticalAlignment: Text.AlignVCenter
