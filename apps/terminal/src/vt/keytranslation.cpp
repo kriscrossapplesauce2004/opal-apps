@@ -1,3 +1,4 @@
+#include <QList>
 #include "keytranslation.h"
 
 #include <QtCore/qnamespace.h>

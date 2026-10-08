@@ -1,6 +1,6 @@
 #include "terminalitem.h"
 
-#include "pty.h"
+#include "terminalpty.h"
 
 #include <QClipboard>
 #include <QDateTime>
