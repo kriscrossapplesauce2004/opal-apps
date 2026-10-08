@@ -12,8 +12,7 @@ Rectangle {
     implicitWidth: size; implicitHeight: size
     radius: Math.round(size * .28)
     color: hasThumb ? Theme.surfaceHighest : Theme.alpha(tone, file.k === "folder" ? .22 : .16)
-    clip: true
-    Image { anchors.fill: parent; visible: g.hasThumb; source: g.hasThumb ? g.file.t : ""; fillMode: Image.PreserveAspectCrop; asynchronous: false; sourceSize: Qt.size(g.size * 2, g.size * 2) }
+    RoundedImage { anchors.fill: parent; radius: g.radius; visible: g.hasThumb; source: g.hasThumb ? g.file.t : ""; sourceSize: Qt.size(g.size * 2, g.size * 2) }
     Glyph { anchors.centerIn: parent; visible: !g.hasThumb; name: F.glyph[g.file.k] || "draft"; fill: g.file.k === "folder" ? 1 : 0; color: g.tone; font.pixelSize: Math.round(g.size * .52) }
     Glyph { visible: !!g.file.sync; anchors.right: parent.right; anchors.bottom: parent.bottom; anchors.margins: g.size * .08; name: "sync"; font.pixelSize: Math.round(g.size * .3); color: g.tone }
 }

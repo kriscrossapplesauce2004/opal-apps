@@ -30,7 +30,8 @@ Rectangle {
             color: Theme.text
             placeholderText: bar.placeholder
             placeholderTextColor: Theme.subtext
-            font.family: Theme.font; font.pixelSize: Theme.px(15)
+            font.family: Theme.font; font.pixelSize: Theme.px(15); font.weight: Font.Normal
+            font.variableAxes: ({"wdth": 100, "ROND": 0})
             selectionColor: Theme.alpha(Theme.primary, .4)
             onAccepted: bar.accepted()
         }
