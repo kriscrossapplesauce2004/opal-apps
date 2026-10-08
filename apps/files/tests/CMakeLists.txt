@@ -9,3 +9,7 @@ function(opal_files_test name)
 endfunction()
 
 opal_files_test(foldermodel)
+opal_files_test(fileops)
+opal_files_test(places)
+opal_files_test(search)
+opal_files_test(thumbnailer)
