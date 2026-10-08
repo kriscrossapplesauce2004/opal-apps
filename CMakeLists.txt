@@ -19,11 +19,14 @@ endif()
 
 option(OPAL_BUILD_TESTS "Build the Opal.Material tests" ON)
 
+if(OPAL_BUILD_TESTS)
+    enable_testing()
+endif()
+
 add_subdirectory(material)
 add_subdirectory(apps)
 add_subdirectory(tools)
 
 if(OPAL_BUILD_TESTS)
-    enable_testing()
     add_subdirectory(tests)
 endif()

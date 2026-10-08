@@ -14,6 +14,11 @@
 #include <rhi/qrhi.h>
 #include <memory>
 
+#ifdef OPAL_RENDER_INIT_HOOK
+// An app build can link its own backend and register it on the engine before the QML loads.
+void OPAL_RENDER_INIT_HOOK(QQmlEngine *engine);
+#endif
+
 // Renders one QML file to a PNG with the real GPU scene graph and no visible window:
 // opal-render <file.qml> <out.png> <width>x<height> [delay-ms]. Posture and colours come from the usual sources.
 int main(int argc, char **argv)
@@ -37,6 +42,9 @@ int main(int argc, char **argv)
 
     QQmlEngine engine;
     engine.addImportPath(QStringLiteral(OPAL_QML_DIR));
+#ifdef OPAL_RENDER_INIT_HOOK
+    OPAL_RENDER_INIT_HOOK(&engine);
+#endif
     QQmlComponent component(&engine, QUrl::fromLocalFile(QDir::current().absoluteFilePath(QString::fromLocal8Bit(argv[1]))));
     auto *root = qobject_cast<QQuickItem *>(component.create());
     if (!root) { for (const auto &e : component.errors()) qCritical("%s", qPrintable(e.toString())); return 1; }
