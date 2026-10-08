@@ -35,6 +35,29 @@ target_include_directories(OpalTerminalEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
 target_link_libraries(OpalTerminalEngine PUBLIC Qt6::Core Qt6::Gui Qt6::Qml Qt6::Quick PRIVATE vterm)
 target_compile_definitions(OpalTerminalEngine PRIVATE OPAL_TERMINAL_LIBRARY)
 
+# The app interface as its own module, so tests and the render tool can load it.
+qt_add_library(OpalTerminalUi SHARED)
+qt_add_qml_module(OpalTerminalUi
+    URI Opal.TerminalUi
+    VERSION 1.0
+    RESOURCE_PREFIX /qt/qml
+    SOURCES
+        src/ui/terminalconfig.h src/ui/terminalconfig.cpp
+        src/ui/terminalthemes.h src/ui/terminalthemes.cpp
+        src/ui/terminalhelpers.h src/ui/terminalhelpers.cpp
+    QML_FILES
+        qml/ui/TerminalView.qml qml/ui/TermPane.qml qml/ui/SplitNode.qml qml/ui/TermTabs.qml qml/ui/SessionsSidebar.qml
+        qml/ui/CommandPalette.qml qml/ui/AppearancePanel.qml qml/ui/KeyRow.qml qml/ui/SessionEntry.qml
+    DEPENDENCIES QtQuick Opal.Material Opal.Terminal
+)
+qt_add_shaders(OpalTerminalUi "terminal_ui_shaders"
+    BASE ${CMAKE_CURRENT_SOURCE_DIR}/qml/ui
+    PREFIX /opal/terminal-ui
+    FILES qml/ui/shaders/crt.frag qml/ui/shaders/bloom.frag qml/ui/shaders/edgeglow.frag)
+target_include_directories(OpalTerminalUi PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/ui)
+target_link_libraries(OpalTerminalUi PUBLIC Qt6::Core Qt6::Gui Qt6::Qml Qt6::Quick OpalTerminalEngine)
+add_dependencies(OpalTerminalUi OpalMaterialplugin OpalTerminalEngineplugin)
+
 qt_add_executable(opal-terminal src/main.cpp)
 qt_add_qml_module(opal-terminal
     URI OpalTerminalApp
@@ -42,12 +65,12 @@ qt_add_qml_module(opal-terminal
     QML_FILES qml/Main.qml
     RESOURCE_PREFIX /qt/qml
 )
-target_link_libraries(opal-terminal PRIVATE OpalTerminalEngine OpalMaterial Qt6::Quick Qt6::QuickControls2)
+target_link_libraries(opal-terminal PRIVATE OpalTerminalEngine OpalTerminalUi OpalMaterial Qt6::Quick Qt6::QuickControls2)
 target_compile_definitions(opal-terminal PRIVATE OPAL_QML_DIR="${QT_QML_OUTPUT_DIRECTORY}")
-add_dependencies(opal-terminal OpalMaterialplugin OpalTerminalEngineplugin)
+add_dependencies(opal-terminal OpalMaterialplugin OpalTerminalEngineplugin OpalTerminalUiplugin)
 
 include(GNUInstallDirs)
-install(TARGETS opal-terminal OpalTerminalEngine OpalTerminalEngineplugin
+install(TARGETS opal-terminal OpalTerminalEngine OpalTerminalEngineplugin OpalTerminalUi OpalTerminalUiplugin
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(FILES data/dev.opal.Terminal.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
