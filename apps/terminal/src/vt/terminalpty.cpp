@@ -1,4 +1,4 @@
-#include "pty.h"
+#include "terminalpty.h"
 
 #include <QDir>
 #include <QFileInfo>

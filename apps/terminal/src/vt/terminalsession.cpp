@@ -1,7 +1,7 @@
 #include "terminalsession.h"
 
 #include "keytranslation.h"
-#include "pty.h"
+#include "terminalpty.h"
 
 #include <QDateTime>
 #include <QFile>

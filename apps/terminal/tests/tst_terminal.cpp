@@ -1,5 +1,5 @@
 #include "vt/keytranslation.h"
-#include "vt/pty.h"
+#include "vt/terminalpty.h"
 #include "vt/terminalsession.h"
 
 #include <QSignalSpy>

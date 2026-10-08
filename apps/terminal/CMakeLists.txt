@@ -16,7 +16,7 @@ qt_add_qml_module(OpalTerminalEngine
     VERSION 1.0
     RESOURCE_PREFIX /qt/qml
     SOURCES
-        src/vt/pty.h src/vt/pty.cpp
+        src/vt/terminalpty.h src/vt/terminalpty.cpp
         src/vt/terminalpalette.h src/vt/terminalpalette.cpp
         src/vt/commandmarksmodel.h src/vt/commandmarksmodel.cpp
         src/vt/terminalsession.h src/vt/terminalsession.cpp
@@ -30,7 +30,7 @@ qt_add_shaders(OpalTerminalEngine "terminal_shaders"
     PREFIX /opal/terminal
     FILES src/vt/shaders/cells.vert src/vt/shaders/cells.frag
     OUTPUT_TARGETS shader_targets)
-target_include_directories(OpalTerminalEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_include_directories(OpalTerminalEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/src/vt)
 target_link_libraries(OpalTerminalEngine PUBLIC Qt6::Core Qt6::Gui Qt6::Qml Qt6::Quick PRIVATE vterm)
 target_compile_definitions(OpalTerminalEngine PRIVATE OPAL_TERMINAL_LIBRARY)
 
