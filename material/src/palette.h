@@ -34,6 +34,9 @@ public:
     void setSeed(const QColor &seed);
     QColor accent() const { return m_portalAccent; }
 
+    // Full M3 scheme from any seed, for content-tinted surfaces such as a player that follows its album art.
+    Q_INVOKABLE QVariantMap schemeFor(const QColor &seed, bool light) const;
+
     // Path of Opal's preferences file; OPAL_PREFERENCES overrides it.
     static QString preferencesPath();
 

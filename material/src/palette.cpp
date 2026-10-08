@@ -97,6 +97,11 @@ void Palette::setSeed(const QColor &seed)
     resolve();
 }
 
+QVariantMap Palette::schemeFor(const QColor &seed, bool light) const
+{
+    return opal::schemeFromSeed(seed, light);
+}
+
 void Palette::readPortal()
 {
     auto read = [](const char *ns, const char *key) -> QVariant {
