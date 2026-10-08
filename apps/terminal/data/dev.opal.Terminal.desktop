@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Terminal
+GenericName=Terminal Emulator
+Comment=Fast, riceable terminal
+Exec=opal-terminal
+Icon=utilities-terminal
+Terminal=false
+Categories=System;TerminalEmulator;
+Keywords=shell;prompt;command;console;
+StartupWMClass=opal-terminal
