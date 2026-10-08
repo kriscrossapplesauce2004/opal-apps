@@ -97,9 +97,9 @@ void Palette::setSeed(const QColor &seed)
     resolve();
 }
 
-QVariantMap Palette::schemeFor(const QColor &seed, bool light) const
+QVariantMap Palette::schemeFor(const QColor &seed, bool light, qreal chroma) const
 {
-    return opal::schemeFromSeed(seed, light);
+    return opal::schemeFromSeed(seed, light, chroma);
 }
 
 void Palette::readPortal()

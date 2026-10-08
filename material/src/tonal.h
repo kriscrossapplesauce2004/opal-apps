@@ -11,7 +11,7 @@ struct TonalPalette {
     QColor tone(double t) const;
 };
 
-// Tonal-spot M3 scheme from a seed colour. Keys are M3 role names in snake case (primary, on_primary, surface_container_high...).
-QVariantMap schemeFromSeed(const QColor &seed, bool light);
+// Tonal-spot M3 scheme from a seed colour. Keys are M3 role names in snake case (primary, on_primary, surface_container_high...). chroma scales colourfulness; below 1 gives a calmer scheme.
+QVariantMap schemeFromSeed(const QColor &seed, bool light, double chroma = 1.0);
 
 }

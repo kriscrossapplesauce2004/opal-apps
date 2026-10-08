@@ -63,13 +63,13 @@ QColor TonalPalette::tone(double t) const
     return QColor::fromRgbF(rgb[0], rgb[1], rgb[2]);
 }
 
-QVariantMap schemeFromSeed(const QColor &seed, bool light)
+QVariantMap schemeFromSeed(const QColor &seed, bool light, double chroma)
 {
     const Lab lab = toLab(seed.isValid() ? seed : QColor("#7355ad"));
     double hue = std::atan2(lab.b, lab.a) * 180.0 / std::numbers::pi;
     if (hue < 0) hue += 360;
     // CIELAB chroma runs about 1.3 times CAM16 chroma, so the M3 tonal-spot chroma values are scaled.
-    const double k = 1.3;
+    const double k = 1.3 * std::clamp(chroma, 0.0, 2.0);
     const TonalPalette p{hue, 36 * k}, s{hue, 16 * k}, t{std::fmod(hue + 60, 360), 24 * k};
     const TonalPalette n{hue, 5 * k}, nv{hue, 9 * k}, e{25, 70 * k};
     QVariantMap m;
