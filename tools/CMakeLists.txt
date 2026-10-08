@@ -1,0 +1,4 @@
+qt_add_executable(opal-render render/main.cpp)
+target_link_libraries(opal-render PRIVATE Qt6::Gui Qt6::Quick Qt6::Qml)
+target_compile_definitions(opal-render PRIVATE OPAL_QML_DIR="${QT_QML_OUTPUT_DIRECTORY}")
+add_dependencies(opal-render OpalMaterial OpalMaterialplugin)
