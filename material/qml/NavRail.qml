@@ -51,11 +51,11 @@ Rectangle {
                     MText { visible: rail.expanded; x: 56; anchors.verticalCenter: parent.verticalCenter; width: parent.width - 64; text: item.modelData.title; role: "titleS"; font.weight: item.current ? Font.Bold : Font.Medium; color: item.current ? Theme.onSecondaryContainer : Theme.subtext }
                     Rectangle { visible: !!item.modelData.badge; anchors.right: parent.right; anchors.rightMargin: rail.expanded ? 16 : 10; anchors.top: rail.expanded ? undefined : parent.top; anchors.verticalCenter: rail.expanded ? parent.verticalCenter : undefined; width: Math.max(16, badgeText.implicitWidth + 8); height: 16; radius: 8; color: Theme.error
                         MText { id: badgeText; anchors.centerIn: parent; text: item.modelData.badge || ""; font.pixelSize: 10; font.weight: Font.Bold; color: Theme.role("on_error", "#690005") } }
-                    FocusRing { target: item; radius: pill.radius }
                 }
                 MText { visible: !rail.expanded; anchors.horizontalCenter: parent.horizontalCenter; y: 36; text: item.modelData.title; role: "label"; font.weight: item.current ? Font.Bold : Font.Medium; color: item.current ? Theme.text : Theme.subtext }
                 HoverHandler { id: hover }
                 TapHandler { id: tap; onTapped: rail.picked(item.index) }
+                FocusRing { target: pill; anchors.fill: undefined; x: pill.x - 3; y: pill.y - 3; width: pill.width + 6; height: pill.height + 6; radius: pill.radius + 3; visible: item.activeFocus && (Posture.controllerActive || !Posture.touch) }
                 Accessible.role: Accessible.PageTab; Accessible.name: modelData.title; Accessible.selected: current
             }
         }
