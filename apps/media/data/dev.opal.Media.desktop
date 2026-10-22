@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Media
+GenericName=Media Player
+Comment=Play music, videos, radio and audiobooks
+Exec=opal-media
+Icon=multimedia-player
+Terminal=false
+Categories=AudioVideo;Audio;Video;Player;
+Keywords=music;video;radio;podcast;audiobook;jellyfin;
+StartupWMClass=dev.opal.Media

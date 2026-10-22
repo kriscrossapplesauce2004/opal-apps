@@ -20,3 +20,4 @@ add_dependencies(opal-photos OpalMaterialplugin)
 
 include(GNUInstallDirs)
 install(TARGETS opal-photos RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(FILES data/dev.opal.Photos.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)

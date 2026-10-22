@@ -20,3 +20,4 @@ add_dependencies(opal-media OpalMaterialplugin)
 
 include(GNUInstallDirs)
 install(TARGETS opal-media RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(FILES data/dev.opal.Media.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)

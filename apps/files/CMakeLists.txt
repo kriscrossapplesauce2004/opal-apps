@@ -76,3 +76,4 @@ endif()
 
 include(GNUInstallDirs)
 install(TARGETS opal-files RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(FILES data/dev.opal.Files.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)

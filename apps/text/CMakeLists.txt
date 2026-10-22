@@ -16,3 +16,4 @@ add_dependencies(opal-text-editor OpalMaterialplugin)
 
 include(GNUInstallDirs)
 install(TARGETS opal-text-editor RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(FILES data/dev.opal.TextEditor.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)

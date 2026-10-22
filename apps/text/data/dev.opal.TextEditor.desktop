@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Text Editor
+GenericName=Text Editor
+Comment=Write, code and read documents
+Exec=opal-text-editor
+Icon=accessories-text-editor
+Terminal=false
+Categories=Utility;TextEditor;
+Keywords=text;editor;code;write;notes;
+StartupWMClass=dev.opal.TextEditor

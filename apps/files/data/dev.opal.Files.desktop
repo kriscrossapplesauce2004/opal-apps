@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Files
+GenericName=File Manager
+Comment=Browse and manage your files
+Exec=opal-files
+Icon=system-file-manager
+Terminal=false
+Categories=System;FileTools;FileManager;
+Keywords=folder;manager;explore;disk;filesystem;
+StartupWMClass=dev.opal.Files

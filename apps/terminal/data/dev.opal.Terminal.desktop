@@ -8,4 +8,4 @@ Icon=utilities-terminal
 Terminal=false
 Categories=System;TerminalEmulator;
 Keywords=shell;prompt;command;console;
-StartupWMClass=opal-terminal
+StartupWMClass=dev.opal.Terminal

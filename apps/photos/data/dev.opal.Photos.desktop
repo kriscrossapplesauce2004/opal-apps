@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Photos
+GenericName=Photo Viewer
+Comment=View, organise and edit your photos
+Exec=opal-photos
+Icon=applications-graphics
+Terminal=false
+Categories=Graphics;Photography;Viewer;
+Keywords=image;picture;album;gallery;camera;
+StartupWMClass=dev.opal.Photos
