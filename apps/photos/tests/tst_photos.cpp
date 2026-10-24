@@ -171,6 +171,8 @@ private slots:
     void importCopiesOnce()
     {
         QVERIFY(PhotoActions::importFolder(QStringLiteral("/p")).startsWith(QStringLiteral("/p/Imported/")));
+        // The private home outlives a run, so the import folder starts empty each time.
+        QDir(PhotoActions::importFolder(PhotoLibrary::instance()->picturesPath())).removeRecursively();
         PhotoActions actions;
         QSignalSpy imported(&actions, &PhotoActions::imported);
         const QString src = m_dir.path() + QStringLiteral("/phone/DCIM/IMG_1.jpg");
