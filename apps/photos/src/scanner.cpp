@@ -244,7 +244,8 @@ Result scan(const Options &options, const QHash<QString, Photo> &cache, const st
         if (canonical.isEmpty() || seenFolders.contains(canonical) || excluded.contains(item.path))
             continue;
         seenFolders.insert(canonical);
-        if (options.skipSoftware && (item.topLevel ? looksLikeSoftware(item.path) : hasSoftwareMarker(item.path))) {
+        // A root is always walked: the user chose it, even when it also holds a program or an archive.
+        if (options.skipSoftware && !roots.contains(item.path) && (item.topLevel ? looksLikeSoftware(item.path) : hasSoftwareMarker(item.path))) {
             result.skipped.append(item.path);
             continue;
         }

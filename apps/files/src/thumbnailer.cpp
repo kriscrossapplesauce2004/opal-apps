@@ -207,6 +207,8 @@ Thumbnailer *Thumbnailer::create(QQmlEngine *engine, QJSEngine *)
 
 void Thumbnailer::attach(QQmlEngine *engine)
 {
+    // Make the singleton here, on the GUI thread; the provider would otherwise make it on the image reader thread.
+    instance();
     if (engine && !engine->imageProvider(QStringLiteral("thumb")))
         engine->addImageProvider(QStringLiteral("thumb"), new ThumbProvider);
 }

@@ -30,7 +30,7 @@ Item {
                 MText { text: qsTr("Albums"); role: page.couch ? "displayS" : "headline" }
                 MText { text: qsTr("%n album(s)", "", albums.count); role: "labelS"; color: Theme.subtext } }
             Item { Layout.fillWidth: true }
-            MButton { text: page.phone ? "" : qsTr("Add folder"); icon: "create_new_folder"; tonal: true; tooltip: qsTr("Add a folder to Photos"); onClicked: page.addFolder() }
+            MButton { visible: page.phone; icon: "create_new_folder"; tonal: true; tooltip: qsTr("Add a folder to Photos"); onClicked: page.addFolder() }
         }
         // Sources: this PC first, then phones and cards that are plugged in.
         Flickable {
