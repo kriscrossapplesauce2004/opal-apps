@@ -52,8 +52,9 @@ Rectangle {
         MText { visible: row.trailing !== ""; text: row.trailing; role: "label"; color: Theme.subtext }
         Glyph { visible: row.trailingIcon !== ""; name: row.trailingIcon; color: Theme.subtext; font.pixelSize: Theme.px(20) }
     }
+    // Below the row content, so buttons put in the trailing slot get their own clicks.
     MouseArea {
-        id: mouse; anchors.fill: parent; hoverEnabled: true; acceptedButtons: Qt.LeftButton | Qt.RightButton
+        id: mouse; anchors.fill: parent; z: -1; hoverEnabled: true; acceptedButtons: Qt.LeftButton | Qt.RightButton
         onClicked: e => { if (e.button === Qt.RightButton) row.contextRequested(e.x, e.y); else row.clicked(); }
         onDoubleClicked: row.activated()
         onPressAndHold: e => row.contextRequested(e.x, e.y)

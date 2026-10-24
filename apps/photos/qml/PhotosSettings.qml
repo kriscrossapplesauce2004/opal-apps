@@ -22,7 +22,7 @@ Flickable {
                 required property int index
                 Layout.fillWidth: true; icon: modelData === PhotoLibrary.picturesPath ? "photo_library" : "folder"
                 title: settings.home(modelData); grouped: true; first: index === 0; last: index === PhotoLibrary.roots.length - 1
-                MButton { anchors.right: parent.right; anchors.rightMargin: 8; anchors.verticalCenter: parent.verticalCenter; visible: PhotoLibrary.roots.length > 1; icon: "remove_circle_outline"; compact: true; tooltip: qsTr("Stop watching this folder"); onClicked: PhotoLibrary.removeRoot(parent.modelData) }
+                MButton { visible: PhotoLibrary.roots.length > 1; icon: "remove_circle_outline"; compact: true; tooltip: qsTr("Stop watching this folder"); onClicked: PhotoLibrary.removeRoot(modelData) }
             }
         }
         MButton { text: qsTr("Add folder"); icon: "create_new_folder"; tonal: true; onClicked: settings.addFolder() }
@@ -38,7 +38,7 @@ Flickable {
         Repeater {
             model: PhotoLibrary.excluded
             ListRow { required property string modelData; Layout.fillWidth: true; icon: "visibility_off"; title: settings.home(modelData)
-                MButton { anchors.right: parent.right; anchors.rightMargin: 8; anchors.verticalCenter: parent.verticalCenter; text: qsTr("Show"); compact: true; onClicked: PhotoLibrary.include(parent.modelData) } }
+                MButton { text: qsTr("Show"); compact: true; onClicked: PhotoLibrary.include(modelData) } }
         }
         RowLayout { Layout.topMargin: 10; spacing: 10
             MButton { text: qsTr("Look again now"); icon: "refresh"; enabled: !PhotoLibrary.scanning; onClicked: PhotoLibrary.rescan() }
