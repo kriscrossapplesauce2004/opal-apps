@@ -94,7 +94,7 @@ Item {
                 Item { Layout.fillHeight: true }
                 RowLayout { spacing: 8
                     MButton { text: qsTr("Open"); icon: "open_in_new"; filled: true; onClicked: cols.pane.openSelection() }
-                    MButton { icon: "share"; compact: true } }
+                    MButton { icon: "content_copy"; compact: true; tooltip: qsTr("Copy"); enabled: !!info.uri; onClicked: SystemBridge.setClipboard([info.uri], false) } }
             }
         }
     }
