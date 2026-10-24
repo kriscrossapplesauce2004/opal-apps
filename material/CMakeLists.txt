@@ -4,7 +4,8 @@ set(OPAL_MATERIAL_QML
     qml/Theme.qml qml/MText.qml qml/Glyph.qml qml/Surface.qml qml/MButton.qml qml/Chip.qml qml/MorphChip.qml
     qml/ExpressiveSlider.qml qml/SwitchRow.qml qml/ChoiceGroup.qml qml/HintBar.qml qml/FocusRing.qml qml/ListRow.qml
     qml/SearchField.qml qml/NavRail.qml qml/NavBar.qml qml/CouchTabs.qml qml/Fab.qml qml/TopBar.qml qml/Sheet.qml
-    qml/Card.qml qml/SegmentedButtons.qml qml/WavyProgress.qml qml/AppFrame.qml qml/AppWindow.qml qml/RoundedImage.qml)
+    qml/Card.qml qml/SegmentedButtons.qml qml/WavyProgress.qml qml/AppFrame.qml qml/AppWindow.qml qml/RoundedImage.qml
+    qml/LoadingIndicator.qml)
 set_source_files_properties(qml/Theme.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
 
 qt_add_qml_module(OpalMaterial
