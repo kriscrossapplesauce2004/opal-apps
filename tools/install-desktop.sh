@@ -3,11 +3,13 @@
 set -eu
 root=$(cd "$(dirname "$0")/.." && pwd)
 dest=${XDG_DATA_HOME:-$HOME/.local/share}/applications
-mkdir -p "$dest"
+icons=${XDG_DATA_HOME:-$HOME/.local/share}/icons/hicolor/scalable/apps
+mkdir -p "$dest" "$icons"
 for entry in "$root"/apps/*/data/*.desktop; do
     name=$(basename "$entry")
+    icon="$(dirname "$entry")/${name%.desktop}.svg"
     if [ "${1:-}" = --remove ]; then
-        rm -f "$dest/$name"
+        rm -f "$dest/$name" "$icons/${name%.desktop}.svg"
         echo "removed $name"
         continue
     fi
@@ -18,7 +20,9 @@ for entry in "$root"/apps/*/data/*.desktop; do
         echo "skipped $name: $exe is not built" >&2
         continue
     fi
+    [ -f "$icon" ] && install -m 0644 "$icon" "$icons/"
     sed -e "s|^Exec=$exe|Exec=$bin|" -e "/^Exec=/a TryExec=$bin" "$entry" > "$dest/$name"
     echo "installed $name -> $bin"
 done
 command -v update-desktop-database >/dev/null && update-desktop-database "$dest" 2>/dev/null || true
+command -v gtk-update-icon-cache >/dev/null && gtk-update-icon-cache -q -t "${icons%/scalable/apps}" 2>/dev/null || true

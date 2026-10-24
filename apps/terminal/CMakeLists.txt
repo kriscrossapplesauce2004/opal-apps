@@ -74,6 +74,7 @@ install(TARGETS opal-terminal OpalTerminalEngine OpalTerminalEngineplugin OpalTe
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(FILES data/dev.opal.Terminal.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+install(FILES data/dev.opal.Terminal.svg DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
 
 if(OPAL_BUILD_TESTS)
     add_subdirectory(tests)
